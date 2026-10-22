@@ -6,222 +6,326 @@
     <title>AstroSim - Laboratorium Olimpiade Astronomi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #f8fafc; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #f8fafc; overflow: hidden; }
         .hidden { display: none !important; }
         .tab-btn.active { border-bottom: 2px solid #38bdf8; color: #38bdf8; }
         .sidebar-item.active { background-color: #1e293b; border-left: 4px solid #38bdf8; color: #f1f5f9; }
         canvas { background-color: #000; border-radius: 0.5rem; border: 1px solid #334155; }
-        .materi-box { background-color: #1e293b; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #334155; margin-bottom: 1rem; }
+        .materi-box { background-color: #1e293b; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #334155; margin-bottom: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .formula { background-color: #0f172a; padding: 0.5rem 1rem; border-radius: 0.25rem; font-family: monospace; color: #38bdf8; display: inline-block; margin: 0.5rem 0; border: 1px solid #1e293b; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden">
+<body class="flex h-screen">
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 overflow-y-auto flex-shrink-0">
-        <div class="p-6">
-            <h1 class="text-2xl font-bold text-sky-400 tracking-wider">AstroSim</h1>
-            <p class="text-xs text-slate-400 mt-1">OSN Astronomi Simulator</p>
+    <!-- Sidebar Navigasi -->
+    <aside class="w-72 bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0 z-10 shadow-xl">
+        <div class="p-6 border-b border-slate-800">
+            <h1 class="text-2xl font-extrabold text-sky-400 tracking-wider flex items-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                AstroSim
+            </h1>
+            <p class="text-xs text-slate-400 mt-2 font-medium tracking-wide uppercase">OSN Astronomi Simulator</p>
         </div>
-        <nav class="mt-2" id="sidebar-nav"></nav>
+        <div class="flex-1 overflow-y-auto" id="sidebar-nav">
+            <!-- Dinamis via JavaScript -->
+        </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col overflow-hidden bg-slate-950">
-        <header class="bg-slate-900 border-b border-slate-800 p-6">
-            <h2 id="chapter-title" class="text-xl font-semibold text-slate-100">Bab 1: Astronomi Dasar</h2>
+    <!-- Konten Utama -->
+    <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-950">
+        <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 p-6 z-10">
+            <h2 id="chapter-title" class="text-2xl font-bold text-slate-100">Bab 1: Astronomi Dasar</h2>
         </header>
 
-        <!-- Tabs -->
-        <div class="bg-slate-900 border-b border-slate-800 px-6 flex space-x-6">
-            <button class="tab-btn active py-3 text-sm font-medium text-slate-400 hover:text-slate-200 transition" onclick="switchTab('materi')">Materi Lengkap</button>
-            <button class="tab-btn py-3 text-sm font-medium text-slate-400 hover:text-slate-200 transition" onclick="switchTab('simulasi')">Simulasi Interaktif</button>
-            <button class="tab-btn py-3 text-sm font-medium text-slate-400 hover:text-slate-200 transition" onclick="switchTab('kalkulator')">Kalkulator</button>
-            <button class="tab-btn py-3 text-sm font-medium text-slate-400 hover:text-slate-200 transition" onclick="switchTab('soal')">Latihan Soal (Diktat)</button>
+        <!-- Tab Navigasi Menu -->
+        <div class="bg-slate-900 border-b border-slate-800 px-6 flex space-x-8 z-10 shadow-md" id="tab-container">
+            <button class="tab-btn active py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('materi')">Materi Lengkap</button>
+            <button class="tab-btn py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('simulasi')">Simulasi Animasi</button>
+            <button class="tab-btn py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('kalkulator')">Kalkulator</button>
+            <button class="tab-btn py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('soal')">Latihan Soal (20)</button>
         </div>
 
-        <!-- Content Area -->
-        <div class="flex-1 overflow-y-auto p-6 relative" id="content-area">
+        <!-- Area Konten (Materi, Simulasi, dll) -->
+        <div class="flex-1 overflow-y-auto p-8 relative" id="content-area">
             
-            <!-- BAB 1 -->
+            <!-- ================= BAB 1 ================= -->
             <div id="bab-1" class="chapter-content">
-                <!-- Materi Bab 1 -->
-                <div id="bab-1-materi" class="tab-content text-slate-300 leading-relaxed space-y-4">
+                
+                <!-- Tab Materi -->
+                <div id="bab-1-materi" class="tab-content text-slate-300 leading-relaxed max-w-4xl mx-auto">
                     <div class="materi-box">
-                        <h3 class="text-lg font-bold text-sky-400 mb-2">1. Jarak & Paralaks Trigonometri</h3>
-                        <p>Jarak bintang sangat jauh sehingga diameter Bumi tidak cukup sebagai <em>baseline</em>. Kita menggunakan jarak Bumi-Matahari (1 AU = $1.5 \times 10^{13}$ cm). Sudut paralaks $p$ dirumuskan sebagai: <strong>$p = 1 / d$</strong>, di mana $p$ dalam detik busur (") dan $d$ dalam parsec (pc).</p>
-                        <p class="mt-2 text-sm text-slate-400">1 parsec = 3.26 Tahun Cahaya (ly). Bintang terdekat, Proxima Centauri, memiliki paralaks 0.76" (jarak ~1.31 pc).</p>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">1. Astronomi vs Astrologi</h3>
+                        <p class="mb-2"><strong>Astronomi</strong> adalah ilmu observasional yang mempelajari segala sesuatu tentang alam semesta dari segi mikro sampai makro dengan memanfaatkan ilmu pengetahuan lain secara saintifik.</p>
+                        <p><strong>Astrologi</strong> adalah pseudosains mistis yang percaya bahwa posisi bintang dan planet secara langsung mempengaruhi kehidupan individu manusia.</p>
                     </div>
+
                     <div class="materi-box">
-                        <h3 class="text-lg font-bold text-sky-400 mb-2">2. Waktu Sideris vs Hari Matahari</h3>
-                        <p>Hari matahari (solar day) didasarkan pada rotasi Bumi relatif terhadap Matahari (24 jam). Hari sideris didasarkan pada bintang (23 jam 56 menit 4 detik). Perbedaan 4 menit terjadi karena Bumi bergerak sekitar 1° dalam orbitnya setiap hari, sehingga butuh waktu tambahan agar Matahari kembali tepat di meridian.</p>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">2. Menghitung Jarak: Paralaks Trigonometri</h3>
+                        <p class="mb-3">Jarak bintang sangat jauh sehingga penginderaan spasial kita tidak mampu merasakannya. Untuk bintang yang relatif dekat, kita menggunakan metode Paralaks Trigonometri dengan mengambil baseline diameter orbit Bumi mengelilingi Matahari.</p>
+                        <div class="formula">p = 1 / d*</div>
+                        <p class="text-sm text-slate-400 mt-2">Dimana: <strong>p</strong> = sudut paralaks (dalam detik busur / arcsec), <strong>d*</strong> = jarak bintang (dalam parsec).</p>
+                        <ul class="list-disc pl-5 mt-3 space-y-1">
+                            <li>1 Astronomical Unit (AU) = Jarak Bumi-Matahari = $1,50 \times 10^{13}$ cm.</li>
+                            <li>1 Tahun Cahaya (ly) = $9,46 \times 10^{17}$ cm.</li>
+                            <li>1 Parsec (pc) = 3,26 ly. Parsec didefinisikan sebagai jarak bintang yang memiliki paralaks tepat 1 detik busur.</li>
+                        </ul>
                     </div>
+
                     <div class="materi-box">
-                        <h3 class="text-lg font-bold text-sky-400 mb-2">3. Sudut Separasi & Diameter Sudut</h3>
-                        <p>Ukuran linier benda langit (D) diproyeksikan sebagai diameter sudut ($\alpha$) bergantung pada jarak (d): <strong>$\tan \alpha = D / d$</strong>.</p>
-                        <p>Jarak sudut/separasi antara dua benda langit dapat dihitung menggunakan aturan kosinus: <strong>$a^2 = b^2 + c^2 - 2bc \cos \beta$</strong>.</p>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">3. Waktu (Hari Sideris vs Hari Matahari)</h3>
+                        <p class="mb-2">Ada dua macam ukuran hari:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Hari Matahari (Solar Day):</strong> Interval waktu dari Matahari di atas kepala kembali tepat ke atas kepala. (24 jam).</li>
+                            <li><strong>Hari Sideris (Sidereal Day):</strong> Interval waktu Bumi berotasi relatif terhadap posisi bintang tetap. Waktunya lebih pendek ±4 menit dibandingkan hari matahari karena selama 1 hari, Bumi juga berevolusi 1 derajat di orbitnya.</li>
+                        </ul>
                     </div>
+
                     <div class="materi-box">
-                        <h3 class="text-lg font-bold text-sky-400 mb-2">4. Pengenalan Elips</h3>
-                        <p>Dalam mekanika orbit awal, elips didefinisikan oleh sumbu mayor ($a$), sumbu minor ($b$), dan eksentrisitas ($e = c / a$). Perihelium adalah titik terdekat ($a-c$), Aphelium adalah titik terjauh ($a+c$).</p>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">4. Diameter Sudut dan Sudut Separasi</h3>
+                        <p class="mb-3">Ukuran linier benda (D) dapat dicari menggunakan proyeksi diameter sudutnya (α) di langit jika jaraknya (d) diketahui.</p>
+                        <div class="formula">tan α = D / d</div>
+                        <p class="mt-4 mb-2">Untuk mencari jarak pisah sesungguhnya (linear) antara dua benda langit A dan B yang terpisah sejauh sudut β dari pengamat di Bumi, kita gunakan aturan cosinus trigonometri:</p>
+                        <div class="formula">a² = b² + c² - 2bc cos β</div>
                     </div>
                 </div>
 
-                <!-- Simulasi Bab 1 -->
-                <div id="bab-1-simulasi" class="tab-content hidden">
-                    <h3 class="text-lg font-bold text-sky-400 mb-2">Simulasi Paralaks Bintang</h3>
-                    <p class="text-sm text-slate-400 mb-4">Mendemonstrasikan pergeseran posisi semu bintang dekat terhadap latar belakang bintang jauh saat Bumi mengorbit Matahari.</p>
-                    <canvas id="parallaxCanvas" width="800" height="400" class="w-full max-w-4xl shadow-lg"></canvas>
-                    <div class="mt-4 bg-slate-800 p-4 rounded max-w-4xl">
-                        <label class="block text-sm font-medium text-slate-300">Jarak Bintang Dekat (Parsec): <span id="distVal" class="text-sky-400 font-bold">10</span> pc</label>
-                        <input type="range" id="distanceSlider" min="1" max="50" value="10" class="w-full mt-2 cursor-pointer">
+                <!-- Tab Simulasi -->
+                <div id="bab-1-simulasi" class="tab-content hidden max-w-5xl mx-auto">
+                    <h3 class="text-2xl font-bold text-sky-400 mb-2">Simulasi Animasi: Paralaks Bintang</h3>
+                    <p class="text-slate-400 mb-6">Perhatikan bagaimana bintang merah (objek dekat) tampak bergeser relatif terhadap bintang latar belakang seiring Bumi mengorbit Matahari. Semakin dekat bintang, semakin besar pergeseran paralaksnya.</p>
+                    
+                    <div class="bg-slate-900 border border-slate-700 rounded-xl overflow-hidden p-6 shadow-2xl flex flex-col items-center">
+                        <canvas id="parallaxCanvas" width="800" height="450" class="w-full max-w-4xl rounded-lg shadow-inner"></canvas>
+                        
+                        <div class="w-full max-w-4xl mt-6 bg-slate-800 p-6 rounded-lg border border-slate-700">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="font-bold text-slate-300">Atur Jarak Bintang Merah:</label>
+                                <span class="bg-sky-900/50 text-sky-400 px-4 py-1 rounded font-mono border border-sky-700"><span id="distVal">10</span> Parsec</span>
+                            </div>
+                            <input type="range" id="distanceSlider" min="2" max="30" value="10" class="w-full cursor-pointer h-2 bg-slate-700 rounded-lg appearance-none">
+                            <p class="text-xs text-slate-500 mt-3 text-center">Gunakan slider untuk mendekatkan/menjauhkan bintang. Perhatikan latar belakang!</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Kalkulator Bab 1 -->
-                <div id="bab-1-kalkulator" class="tab-content hidden">
-                    <h3 class="text-lg font-bold text-sky-400 mb-4">Kalkulator Konversi Satuan Astronomi Dasar</h3>
-                    <div class="bg-slate-800 p-6 rounded-lg max-w-2xl border border-slate-700">
-                        <div class="grid grid-cols-2 gap-4">
+                <!-- Tab Kalkulator -->
+                <div id="bab-1-kalkulator" class="tab-content hidden max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-bold text-sky-400 mb-6">Kalkulator Konversi & Jarak Astronomi</h3>
+                    <div class="bg-slate-800 p-8 rounded-xl border border-slate-700 shadow-xl">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm text-slate-400 mb-1">Satuan Input</label>
-                                <select id="b1-unit" class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-slate-200">
-                                    <option value="arcsec">Sudut Paralaks (detik busur)</option>
-                                    <option value="pc">Parsec (pc)</option>
+                                <label class="block text-sm font-bold text-slate-400 mb-2 uppercase tracking-wide">Pilih Satuan Input</label>
+                                <select id="b1-unit" class="w-full bg-slate-900 border-2 border-slate-700 focus:border-sky-500 outline-none rounded-lg p-3 text-slate-200 font-medium transition">
+                                    <option value="arcsec">Sudut Paralaks (detik busur / arcsec)</option>
+                                    <option value="pc">Jarak Parsec (pc)</option>
                                     <option value="ly">Tahun Cahaya (ly)</option>
                                     <option value="au">Astronomical Unit (AU)</option>
                                     <option value="km">Kilometer (km)</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm text-slate-400 mb-1">Nilai</label>
-                                <input type="number" id="b1-val" value="0.76" step="any" class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-slate-200" oninput="calcBab1()">
+                                <label class="block text-sm font-bold text-slate-400 mb-2 uppercase tracking-wide">Masukkan Nilai</label>
+                                <input type="number" id="b1-val" value="0.76" step="any" class="w-full bg-slate-900 border-2 border-slate-700 focus:border-sky-500 outline-none rounded-lg p-3 text-slate-200 font-mono text-lg transition" oninput="calcBab1()">
                             </div>
                         </div>
-                        <div class="mt-6 p-4 bg-slate-900 rounded border border-slate-700 text-slate-300 space-y-2" id="b1-results"></div>
+                        <div class="mt-8">
+                            <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wide border-b border-slate-700 pb-2">Hasil Konversi Otomatis</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="b1-results">
+                                <!-- Hasil dirender disini -->
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Soal Bab 1 -->
-                <div id="bab-1-soal" class="tab-content hidden">
-                    <div class="flex justify-between items-end mb-4">
-                        <h3 class="text-lg font-bold text-sky-400">Evaluasi Pilihan Ganda - Bab 1</h3>
-                        <div id="score-bab1" class="text-lg font-bold text-green-400"></div>
+                <!-- Tab Soal -->
+                <div id="bab-1-soal" class="tab-content hidden max-w-4xl mx-auto">
+                    <div class="flex justify-between items-end mb-6 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-sky-400">Evaluasi Bab 1</h3>
+                            <p class="text-slate-400 text-sm mt-1">Selesaikan 20 soal dari Diktat Hans Gunawan.</p>
+                        </div>
+                        <div id="score-bab1" class="text-xl font-black text-slate-600 bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">Nilai: --</div>
                     </div>
                     <div id="quiz-container-bab1" class="space-y-6"></div>
-                    <button onclick="submitQuiz(1)" class="mt-6 bg-sky-600 hover:bg-sky-500 text-white px-6 py-2 rounded font-medium shadow transition">Koreksi & Hitung Nilai</button>
+                    <div class="sticky bottom-0 bg-slate-950/90 backdrop-blur-md p-4 mt-6 border-t border-slate-800 text-right rounded-b-xl z-20">
+                        <button onclick="submitQuiz(1)" class="bg-sky-600 hover:bg-sky-500 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-sky-900/20 transition transform hover:scale-105">Koreksi & Hitung Nilai</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- BAB 2 -->
+            <!-- ================= BAB 2 ================= -->
             <div id="bab-2" class="chapter-content hidden">
-                <!-- Materi Bab 2 -->
-                <div id="bab-2-materi" class="tab-content text-slate-300 leading-relaxed space-y-4">
+                
+                <!-- Tab Materi -->
+                <div id="bab-2-materi" class="tab-content text-slate-300 leading-relaxed max-w-4xl mx-auto">
                     <div class="materi-box">
-                        <h3 class="text-lg font-bold text-sky-400 mb-2">1. Hukum Pancaran Benda Hitam & Wien</h3>
-                        <p>Bintang memancarkan radiasi menyerupai benda hitam. Hukum Wien menyatakan bahwa puncak panjang gelombang berbanding terbalik dengan suhunya: <strong>$\lambda_{maks} = 0,2898 / T$</strong> (T dalam Kelvin, $\lambda$ dalam cm). Bintang panas tampak biru, bintang dingin tampak merah.</p>
-                        <p>Hukum Stefan-Boltzmann (Luminositas): <strong>$L = 4\pi R^2 \sigma T^4$</strong>.</p>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">1. Hukum Pancaran (Radiation Law)</h3>
+                        <p class="mb-2">Untuk memahami sifat pancaran bintang, kita gunakan hipotesa benda hitam (black body). Panjang gelombang maksimum ($\lambda_{maks}$) pancaran ditentukan oleh <strong>Hukum Wien</strong>:</p>
+                        <div class="formula">$\lambda_{maks} = 0,2898 / T$</div>
+                        <p class="text-sm mt-2 text-slate-400">($\lambda$ dalam cm, T dalam Kelvin). Bintang bersuhu tinggi memancarkan gelombang pendek (tampak biru), bintang bersuhu rendah memancarkan gelombang panjang (tampak merah).</p>
                     </div>
+                    
                     <div class="materi-box">
-                        <h3 class="text-lg font-bold text-sky-400 mb-2">2. Sistem Magnitudo & Skala Pogson</h3>
-                        <p>Skala magnitudo mendefinisikan kecerlangan secara logaritmik. Semakin kecil angka magnitudo, semakin terang bintang tersebut. Skala Pogson: <strong>$m_1 - m_2 = -2.5 \log(E_1 / E_2)$</strong>. Beda 5 magnitudo merepresentasikan rasio fluks energi sebesar 100 kali.</p>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">2. Luminositas dan Fluks (Hukum Kuadrat Kebalikan)</h3>
+                        <p class="mb-2">Luminositas (L) adalah energi total yang dipancarkan bintang ke segala arah per detik. Fluks (E) adalah energi yang diterima pengamat per satuan luas:</p>
+                        <div class="formula">E = L / (4π d²)</div>
+                        <p class="text-sm mt-2 text-slate-400">Kecerlangan berbanding terbalik dengan kuadrat jarak. Jika bintang dijauhkan 3x, terangnya menjadi 1/9 kali semula.</p>
                     </div>
+
                     <div class="materi-box">
-                        <h3 class="text-lg font-bold text-sky-400 mb-2">3. Modulus Jarak</h3>
-                        <p>Magnitudo mutlak ($M$) adalah magnitudo semu ($m$) jika bintang diletakkan pada jarak standar 10 parsec. Rumus modulus jarak: <strong>$m - M = -5 + 5 \log d$</strong>.</p>
-                        <p>Jika terdapat absorpsi/ekstingsi oleh Materi Antar Bintang (MAB), rumusnya menjadi: <strong>$m - M = -5 + 5 \log d + A_v$</strong>.</p>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">3. Sistem Magnitudo & Skala Pogson</h3>
+                        <p class="mb-2">Makin terang bintang, makin KECIL nilai magnitudonya. Beda 5 magnitudo = 100 kali beda kecerlangan. Rumus Pogson:</p>
+                        <div class="formula">m1 - m2 = -2,5 log (E1 / E2)</div>
+                    </div>
+
+                    <div class="materi-box">
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">4. Modulus Jarak & Indeks Warna</h3>
+                        <p class="mb-2">Magnitudo Mutlak (M) adalah magnitudo bintang jika diletakkan di jarak standar 10 parsec. Rumus menghitung jarak asli bintang:</p>
+                        <div class="formula">m - M = -5 + 5 log d + Av</div>
+                        <p class="text-sm mt-2 text-slate-400">Av adalah faktor absorpsi (ekstingsi) Materi Antar Bintang. Indeks Warna (B-V) mengukur perbedaan magnitudo difilter Biru dan Visual. Makin kecil indeks warna, makin panas bintangnya.</p>
                     </div>
                 </div>
 
-                <!-- Simulasi Bab 2 -->
-                <div id="bab-2-simulasi" class="tab-content hidden">
-                    <h3 class="text-lg font-bold text-sky-400 mb-2">Simulasi Kurva Radiasi Benda Hitam</h3>
-                    <p class="text-sm text-slate-400 mb-4">Geser temperatur untuk melihat pergeseran hukum Wien dan perubahan warna visual bintang.</p>
-                    <div class="flex gap-6">
-                        <div class="flex-1 bg-slate-900 border border-slate-700 rounded p-4">
-                            <canvas id="blackbodyCanvas" width="500" height="300" class="w-full"></canvas>
+                <!-- Tab Simulasi -->
+                <div id="bab-2-simulasi" class="tab-content hidden max-w-5xl mx-auto">
+                    <h3 class="text-2xl font-bold text-sky-400 mb-2">Simulasi Hukum Wien & Kurva Benda Hitam</h3>
+                    <p class="text-slate-400 mb-6">Analisis bagaimana temperatur bintang mengubah warna dan letak panjang gelombang puncak (Hukum Wien).</p>
+                    
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <div class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-4 shadow-xl relative">
+                            <canvas id="blackbodyCanvas" width="600" height="350" class="w-full rounded bg-[#0b1120]"></canvas>
                         </div>
-                        <div class="w-64 bg-slate-800 p-6 rounded border border-slate-700 text-center flex flex-col justify-center">
-                            <div id="star-color-indicator" class="w-24 h-24 mx-auto rounded-full shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-colors duration-300"></div>
-                            <p class="mt-4 text-2xl font-bold text-slate-100" id="temp-display">5800 K</p>
-                            <p class="text-sm text-slate-400 mt-1">$\lambda_{maks}$: <span id="lambda-display">500</span> nm</p>
-                            <input type="range" id="tempSlider" min="3000" max="20000" value="5800" step="100" class="w-full mt-6" oninput="updateBlackbody()">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kalkulator Bab 2 -->
-                <div id="bab-2-kalkulator" class="tab-content hidden">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                            <h3 class="text-lg font-bold text-sky-400 mb-4">Kalkulator Rasio Pogson</h3>
-                            <div class="space-y-4">
-                                <div><label class="text-sm text-slate-400">Magnitudo Bintang 1 ($m_1$)</label><input type="number" id="pog-m1" value="1" class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-slate-200 mt-1"></div>
-                                <div><label class="text-sm text-slate-400">Magnitudo Bintang 2 ($m_2$)</label><input type="number" id="pog-m2" value="6" class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-slate-200 mt-1"></div>
-                                <button onclick="calcPogson()" class="w-full bg-sky-600 hover:bg-sky-500 text-white p-2 rounded">Hitung Rasio Terang</button>
-                                <div id="res-pogson" class="p-3 bg-slate-900 rounded border border-slate-700 text-sky-300 font-mono">Bintang 1 = 100x lebih terang dari Bintang 2</div>
+                        <div class="w-full lg:w-80 bg-slate-800 p-8 rounded-xl border border-slate-700 shadow-xl text-center flex flex-col justify-center">
+                            <div class="relative w-32 h-32 mx-auto mb-6">
+                                <div id="star-glow" class="absolute inset-0 rounded-full blur-xl opacity-60 transition-colors duration-200"></div>
+                                <div id="star-core" class="absolute inset-2 rounded-full z-10 transition-colors duration-200"></div>
                             </div>
-                        </div>
-                        <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                            <h3 class="text-lg font-bold text-sky-400 mb-4">Kalkulator Modulus Jarak</h3>
-                            <div class="space-y-4">
-                                <div><label class="text-sm text-slate-400">Magnitudo Semu ($m_v$)</label><input type="number" id="mod-m" value="10" class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-slate-200 mt-1"></div>
-                                <div><label class="text-sm text-slate-400">Magnitudo Mutlak ($M_v$)</label><input type="number" id="mod-M" value="5" class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-slate-200 mt-1"></div>
-                                <div><label class="text-sm text-slate-400">Absorpsi ($A_v$) (Opsional)</label><input type="number" id="mod-Av" value="0" class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-slate-200 mt-1"></div>
-                                <button onclick="calcModulus()" class="w-full bg-sky-600 hover:bg-sky-500 text-white p-2 rounded">Hitung Jarak (pc)</button>
-                                <div id="res-modulus" class="p-3 bg-slate-900 rounded border border-slate-700 text-sky-300 font-mono">Jarak = 100.00 pc</div>
+                            <p class="text-4xl font-black text-slate-100" id="temp-display">5800 K</p>
+                            <p class="text-sm text-slate-400 mt-2 font-mono bg-slate-900 py-2 rounded-lg border border-slate-700">$\lambda_{maks}$: <span id="lambda-display" class="text-sky-400 font-bold">500</span> nm</p>
+                            
+                            <div class="mt-8 text-left">
+                                <label class="text-sm font-bold text-slate-400 uppercase">Atur Temperatur (K)</label>
+                                <input type="range" id="tempSlider" min="2500" max="25000" value="5800" step="100" class="w-full mt-2 cursor-pointer h-2 bg-slate-700 rounded-lg appearance-none" oninput="updateBlackbody()">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Soal Bab 2 -->
-                <div id="bab-2-soal" class="tab-content hidden">
-                    <div class="flex justify-between items-end mb-4">
-                        <h3 class="text-lg font-bold text-sky-400">Evaluasi Pilihan Ganda - Bab 2</h3>
-                        <div id="score-bab2" class="text-lg font-bold text-green-400"></div>
+                <!-- Tab Kalkulator -->
+                <div id="bab-2-kalkulator" class="tab-content hidden max-w-5xl mx-auto">
+                    <h3 class="text-2xl font-bold text-sky-400 mb-6">Kalkulator Fotometri & Jarak</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+                        <!-- Pogson -->
+                        <div class="bg-slate-800 p-8 rounded-xl border border-slate-700 shadow-xl">
+                            <h4 class="text-lg font-bold text-slate-200 mb-6 flex items-center gap-2"><svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Skala Pogson</h4>
+                            <div class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-400 mb-1">Magnitudo Bintang 1 (m1)</label>
+                                    <input type="number" id="pog-m1" value="1.0" class="w-full bg-slate-900 border border-slate-600 rounded p-3 text-slate-200 outline-none focus:border-sky-500 font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-400 mb-1">Magnitudo Bintang 2 (m2)</label>
+                                    <input type="number" id="pog-m2" value="6.0" class="w-full bg-slate-900 border border-slate-600 rounded p-3 text-slate-200 outline-none focus:border-sky-500 font-mono">
+                                </div>
+                                <button onclick="calcPogson()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold p-3 rounded-lg shadow-lg transition">Hitung Rasio Kecerlangan</button>
+                                <div id="res-pogson" class="mt-4 p-4 bg-[#0b1120] border border-sky-900 rounded-lg text-sky-400 font-mono text-center shadow-inner">
+                                    Menunggu input...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modulus -->
+                        <div class="bg-slate-800 p-8 rounded-xl border border-slate-700 shadow-xl">
+                            <h4 class="text-lg font-bold text-slate-200 mb-6 flex items-center gap-2"><svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg> Modulus Jarak</h4>
+                            <div class="space-y-5">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-400 mb-1">m (Semu)</label>
+                                        <input type="number" id="mod-m" value="10" class="w-full bg-slate-900 border border-slate-600 rounded p-3 text-slate-200 outline-none focus:border-emerald-500 font-mono">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-400 mb-1">M (Mutlak)</label>
+                                        <input type="number" id="mod-M" value="5" class="w-full bg-slate-900 border border-slate-600 rounded p-3 text-slate-200 outline-none focus:border-emerald-500 font-mono">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-400 mb-1">Absorpsi MAB (Av) <span class="font-normal text-xs text-slate-500">- Opsional</span></label>
+                                    <input type="number" id="mod-Av" value="0" class="w-full bg-slate-900 border border-slate-600 rounded p-3 text-slate-200 outline-none focus:border-emerald-500 font-mono">
+                                </div>
+                                <button onclick="calcModulus()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold p-3 rounded-lg shadow-lg transition">Hitung Jarak (Parsec)</button>
+                                <div id="res-modulus" class="mt-4 p-4 bg-[#0b1120] border border-emerald-900 rounded-lg text-emerald-400 font-mono text-center shadow-inner">
+                                    Menunggu input...
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Tab Soal -->
+                <div id="bab-2-soal" class="tab-content hidden max-w-4xl mx-auto">
+                    <div class="flex justify-between items-end mb-6 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-sky-400">Evaluasi Bab 2</h3>
+                            <p class="text-slate-400 text-sm mt-1">Selesaikan 20 soal Fotometri Bintang.</p>
+                        </div>
+                        <div id="score-bab2" class="text-xl font-black text-slate-600 bg-slate-900 px-4 py-2 rounded-lg border border-slate-800">Nilai: --</div>
                     </div>
                     <div id="quiz-container-bab2" class="space-y-6"></div>
-                    <button onclick="submitQuiz(2)" class="mt-6 bg-sky-600 hover:bg-sky-500 text-white px-6 py-2 rounded font-medium shadow transition">Koreksi & Hitung Nilai</button>
+                    <div class="sticky bottom-0 bg-slate-950/90 backdrop-blur-md p-4 mt-6 border-t border-slate-800 text-right rounded-b-xl z-20">
+                        <button onclick="submitQuiz(2)" class="bg-sky-600 hover:bg-sky-500 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-sky-900/20 transition transform hover:scale-105">Koreksi & Hitung Nilai</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Placeholder Bab 3-16 -->
             <div id="bab-placeholder" class="chapter-content hidden flex items-center justify-center h-full min-h-[400px]">
-                <div class="text-center">
-                    <svg class="w-16 h-16 text-slate-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    <h3 class="text-2xl font-bold text-slate-500">Kamar Sedang Disiapkan</h3>
-                    <p class="text-slate-600 mt-2">Materi, Simulasi, dan Soal untuk bab ini sedang dalam tahap pengembangan.</p>
+                <div class="text-center max-w-md">
+                    <svg class="w-20 h-20 text-slate-700 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    <h3 class="text-2xl font-bold text-slate-400">Kamar Sedang Disiapkan</h3>
+                    <p class="text-slate-500 mt-2">Materi, Simulasi, dan Soal untuk bab ini sedang dalam tahap persiapan. Kami menunggu unggahan catatan Anda!</p>
                 </div>
             </div>
 
         </div>
     </main>
 
+    <!-- SCRIPTS -->
     <script>
-        // Data Bab
+        // ================= NAVIGASI =================
         const chapters = [
             "Astronomi Dasar", "Fotometri", "Spektroskopi Bintang", "Tata Koordinat Langit",
             "Mekanika Benda Langit", "Gerak dan Kenampakan", "Evolusi Bintang", "Fisika Bintang",
             "Galaksi", "Kosmologi", "Pengenalan Peralatan", "Matahari & Tata Surya",
-            "Gerhana", "Bintang Ganda", "Kalender dan Waktu", "Mengenal Objek Astronomis"
+            "Gerhana", "Bintang Ganda", "Kalender dan Waktu", "Objek Astronomis"
         ];
         let currentChapter = 1;
 
-        // Render Sidebar
         const sidebarNav = document.getElementById('sidebar-nav');
         chapters.forEach((ch, index) => {
             const num = index + 1;
             const btn = document.createElement('button');
-            btn.className = `w-full text-left px-6 py-3 text-sm transition-colors duration-200 sidebar-item ${num === 1 ? 'active' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'}`;
-            btn.innerHTML = `<span class="opacity-50 mr-2">Bab ${num}</span> ${ch}`;
+            btn.className = `w-full text-left px-6 py-4 text-sm font-semibold transition-all duration-200 sidebar-item border-b border-slate-800 ${num === 1 ? 'active' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200 hover:pl-8'}`;
+            btn.innerHTML = `<span class="opacity-60 mr-3 text-xs tracking-widest font-mono">CH ${num.toString().padStart(2, '0')}</span> <span class="truncate block mt-1">${ch}</span>`;
             btn.onclick = () => loadChapter(num, btn, ch);
             sidebarNav.appendChild(btn);
         });
 
         function loadChapter(num, btn, title) {
             currentChapter = num;
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active', 'text-f1f5f9'));
+            document.querySelectorAll('.sidebar-item').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('text-slate-400');
+            });
             btn.classList.add('active');
+            btn.classList.remove('text-slate-400');
             document.getElementById('chapter-title').innerText = `Bab ${num}: ${title}`;
             document.querySelectorAll('.chapter-content').forEach(el => el.classList.add('hidden'));
             
@@ -240,26 +344,27 @@
             const btns = document.querySelectorAll('.tab-btn');
             btns.forEach(btn => btn.classList.remove('active', 'border-sky-400', 'text-sky-400'));
             event.currentTarget.classList.add('active', 'border-sky-400', 'text-sky-400');
-            container.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            document.getElementById(`bab-${currentChapter}-${tabName}`).classList.remove('hidden');
             
-            // Re-render canvas if needed
+            container.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            const targetTab = document.getElementById(`bab-${currentChapter}-${tabName}`);
+            if(targetTab) targetTab.classList.remove('hidden');
+            
+            // Re-render canvas 
             if(tabName === 'simulasi') {
-                if(currentChapter === 1) renderParallax();
+                if(currentChapter === 1) renderParallaxInit();
                 if(currentChapter === 2) updateBlackbody();
             }
         }
 
-        // ================= BANK SOAL DARI DIKTAT HANS =================
-        // Menggunakan array untuk menghindari HTML yang terlalu panjang
+        // ================= DATA SOAL (LENGKAP 40 SOAL) =================
         const bankSoalBab1 = [
-            { q: "We cannot tell merely by looking in the sky that stars in a given constellation are at different distances... What is the difference between the two situations?", opts: ["Small parallax angles cannot be interpreted by our brain", "The stars exhibit no parallax discernible by our eyes", "In a room, the separation of our eyes is large enough to see a parallax", "All of the above"], ans: 3 },
+            { q: "We cannot tell merely by looking in the sky that stars in a given constellation are at different distances. What is the difference between the two situations?", opts: ["Small parallax angles cannot be interpreted by our brain", "The stars do not exhibit parallax discernible by our eyes", "In a room, the separation of our eyes is large enough to see a parallax", "All of the above"], ans: 3 },
             { q: "A star has an observed parallax of 0.2 arc second. Another star has a parallax of 0.02 arc sec. How much farther away is it?", opts: ["10 times", "100 times", "1000 times", "10000 times"], ans: 0 },
             { q: "In order to determine the distance to a star in kilometers by heliocentric parallax, an astronomer must know:", opts: ["The Earth's diameter", "The Earth-Sun distance", "The Earth-Moon distance", "The angle between the Sun and the star"], ans: 1 },
-            { q: "Parallax is defined as:", opts: ["An imaginary sphere", "Distance at which Earth-Sun subtend 1 arcsec", "The apparent shift in position of a foreground object relative to background objects due to a change of position of the observer", "Light travel in a year"], ans: 2 },
-            { q: "Kita melihat di langit bahwa planet itu lebih besar daripada bintang. Faktor utama yang menyebabkan ini adalah:", opts: ["Energi yang dikeluarkan", "Bentuk bendanya", "Jarak bendanya", "Asal usul bendanya"], ans: 2 },
-            { q: "Jarak planet ke titik perihelion dalam tatasurya adalah:", opts: ["setengah sumbu panjang orbit", "setengah sumbu panjang kali satu dikurangi eksentrisitas", "setengah sumbu pendek kali satu dikurangi eksentrisitet", "setengah sumbu pendek orbit"], ans: 1 },
-            { q: "Awak wahana antariksa terdampar di planet X... tongkat A dan B terpisah 14 km, kedudukan bintang 0.5 derajat. Radius planet X sekitar:", opts: ["400 km", "1600 km", "1000 km", "1400 km"], ans: 1 },
+            { q: "Parallax is defined as:", opts: ["An imaginary sphere", "Distance at which Earth-Sun subtends 1 arcsec", "The apparent shift in position of a foreground object relative to background objects due to observer's motion", "Light travel in a year"], ans: 2 },
+            { q: "Kita melihat di langit bahwa planet itu lebih besar daripada bintang. Tetapi sebenarnya bintang lebih besar. Faktor utamanya adalah:", opts: ["Energi yang dikeluarkan", "Bentuk bendanya", "Jarak bendanya", "Semua benar"], ans: 2 },
+            { q: "Jarak planet ke titik perihelion dalam tatasurya adalah:", opts: ["setengah sumbu pendek orbit", "setengah sumbu panjang kali satu dikurangi eksentrisitas", "setengah sumbu pendek kali satu dikurangi eksentrisitet", "setengah sumbu panjang orbit"], ans: 1 },
+            { q: "Awak wahana antariksa terdampar di planet X... tongkat A dan B terpisah 14 km, kedudukan bintang 0.5 derajat. Radius planet X sekitar:", opts: ["400 km", "1000 km", "1600 km", "1400 km"], ans: 2 },
             { q: "Satu satuan astronomi (1 AU) setara dengan:", opts: ["8.3 menit cahaya", "Satu tahun cahaya", "Satu detik cahaya", "3.26 parsek"], ans: 0 },
             { q: "Sudut paralaks bintang yang paling dekat dengan Matahari adalah:", opts: ["Lebih dari 1 derajat", "Lebih dari 1 detik busur kurang dari 1 menit busur", "Kurang dari 1 detik busur", "Lebih dari 1 menit busur"], ans: 2 },
             { q: "A sidereal day on Earth is:", opts: ["Exactly 24 hours long", "About four minutes shorter than a solar day", "About four minutes longer than a solar day", "The time between full moons"], ans: 1 },
@@ -267,7 +372,7 @@
             { q: "The parallax angle becomes:", opts: ["larger as the distance to the object increases", "larger as the separation between the two observing sites increases", "smaller as the distance to the object increases", "Both B and C are correct"], ans: 3 },
             { q: "You observe identical twins in the distance. Joe appears 0.8 degrees tall and Bob appears 0.3 degrees tall.", opts: ["Joe is farther than Bob", "Joe is more than twice as far away as Bob", "Bob is more than twice as far away as Joe", "Bob is a little farther away than Joe"], ans: 2 },
             { q: "Star A has a parallax shift of 0.2 arc second. Star B has a parallax shift of 0.5 arc seconds", opts: ["Star B is more than twice as far as star A", "Star A is more than twice as far as star B", "Star A is a little farther than star B", "Star B is a little farther than star A"], ans: 1 },
-            { q: "You observe a classmate walking... subtends angle 0.03 radians. She is 1.5 m tall. How far away is she?", opts: ["50 m", "45 m", "300 m", "500 m"], ans: 0 },
+            { q: "You observe a classmate walking... subtends vertical angle 0.03 radians. She is 1.5 m tall. How far away is she?", opts: ["50 m", "45 m", "300 m", "500 m"], ans: 0 },
             { q: "The ESA satellite which gives us our best parallax measurements is:", opts: ["Huygens", "Cassini", "Hipparcos", "Copernicus"], ans: 2 },
             { q: "If a star has a parallax of 0.03', then its distance must be:", opts: ["3 parsecs", "30 parsecs", "33 parsecs", "333 parsecs"], ans: 2 },
             { q: "If the parallax of a distant star is too small to be measured, the distance might still be determined using:", opts: ["Kepler's Laws", "Newton's Laws", "spectroscopic parallax", "Doppler shift"], ans: 2 },
@@ -276,13 +381,13 @@
         ];
 
         const bankSoalBab2 = [
-            { q: "Andaikan sebuah bintang yang mirip Matahari berada pada jarak 250.000 AU. Kita akan melihat terang bintang tersebut...", opts: ["1,6 x 10^-11 kali lebih lemah daripada Matahari", "4.0 x 10^6 kali lebih lemah daripada Matahari", "1,6 x 10^-11 kali lebih terang", "Kita tidak bisa membandingkan"], ans: 0 },
-            { q: "Sebuah bintang yang temperatur permukaannya adalah 6000 K akan memancarkan spektrum benda hitam dengan puncaknya pada panjang gelombang:", opts: ["6000 nm", "5 x 10^-7 m (500 nm)", "18 nm", "1.8 x 10^-7 m"], ans: 1 },
-            { q: "Dua buah bintang mempunyai ukuran yang sama, tetapi temperaturnya berbeda. Bintang yang lebih panas akan tampak...", opts: ["lebih biru dan lebih terang", "lebih merah dan lebih terang", "lebih biru, tapi lebih lemah", "sama terang"], ans: 0 },
+            { q: "Andaikan sebuah bintang yang mirip Matahari berada pada jarak 250.000 AU. Kita akan melihat terang bintang tersebut...", opts: ["1,60 x 10^-11 kali lebih lemah daripada Matahari", "4.0 x 10^6 kali lebih lemah", "1,60 x 10^-11 kali lebih terang", "Kita tidak bisa membandingkannya"], ans: 0 },
+            { q: "Sebuah bintang yang temperatur permukaannya adalah 6000 K akan memancarkan spektrum benda hitam dengan puncaknya pada panjang gelombang:", opts: ["6000 nm", "5 x 10^-7 m", "18 nm", "1.8 x 10^-7 m"], ans: 1 },
+            { q: "Dua buah bintang mempunyai ukuran yang sama, tetapi temperaturnya berbeda. Bintang yang lebih panas akan tampak...", opts: ["lebih biru dan lebih terang", "lebih merah dan lebih terang", "lebih biru, tapi lebih lemah", "lebih merah, tapi lebih lemah"], ans: 0 },
             { q: "Tipe radiasi mana yang memiliki panjang gelombang yang lebih panjang dibanding cahaya tampak?", opts: ["Sinar-X", "Radiasi infra merah", "Radiasi cahaya biru", "Sinar Gamma"], ans: 1 },
             { q: "Terang semu bintang (apparent magnitude) menunjukkan:", opts: ["jumlah foton cahaya bintang yang sampai ke Bumi", "daya bintang", "jarak bintang", "diameter sudut bintang"], ans: 0 },
-            { q: "Dua bintang terangnya sama, kemungkinan:", opts: ["jarak dan dayanya sama", "jaraknya sama dayanya berbeda", "jarak dan radiusnya berbeda, dayanya sama", "jarak dan dayanya sebanding"], ans: 0 },
-            { q: "Selain Matahari, bintang paling terang di langit adalah bintang dengan ciri...", opts: ["daya paling besar", "paling panas", "kemungkinan dayanya besar dan jaraknya dekat", "paling dekat"], ans: 2 },
+            { q: "Dua bintang terangnya sama, kemungkinan:", opts: ["jarak dan dayanya sama", "jaraknya sama dayanya berbeda", "jarak dan radiusnya berbeda, dayanya sama", "jarak dan radiusnya sama, dayanya berbeda"], ans: 0 },
+            { q: "Selain Matahari, bintang paling terang di langit adalah bintang dengan ciri...", opts: ["daya paling besar", "bintang paling dekat", "kemungkinan dayanya besar dan jaraknya dekat", "paling panas"], ans: 2 },
             { q: "Bintang yang lemah cahayanya:", opts: ["belum tentu bintang yang jauh", "mungkin bintang yang jauh dengan daya kecil", "bintang dekat berdaya besar dalam nebula gelap", "semua jawaban benar"], ans: 3 },
             { q: "Two stars have the same luminosity. Star A is 5 times further away than Star B. Which is true?", opts: ["Star A appears 5 times brighter", "Star A appears 5 times dimmer", "Star A appears 25 times dimmer", "Star A appears equally bright"], ans: 2 },
             { q: "If a star has an apparent magnitude -2 and is located at 6.3 parsecs, what is the absolute magnitude?", opts: ["-1", "1", "2", "-3"], ans: 0 },
@@ -292,42 +397,73 @@
             { q: "If a star was the same size as our Sun, but 81X more luminous, it must be how many times hotter?", opts: ["3x", "4x", "9x", "81x"], ans: 0 },
             { q: "If Vega is apparent magnitude zero, and Deneb is magnitude one, then:", opts: ["Vega appears 100 times brighter", "Vega appears 2.5 times brighter than Deneb", "Vega is 2.5 times more luminous", "Deneb is brighter"], ans: 1 },
             { q: "A new star is discovered; it emits mostly UV light. Observed with blue and yellow filters, we find:", opts: ["More blue intensity than yellow", "More yellow intensity than blue", "Equal yellow and blue", "Zero intensity"], ans: 0 },
-            { q: "If your naked eye limiting magnitude is 6.0, using a 70 mm telescope (100X area), new limiting magnitude is:", opts: ["7th magnitude", "9th magnitude", "11th magnitude", "13th magnitude"], ans: 2 },
+            { q: "If your naked eye limiting magnitude is 6.0, using a 70 mm telescope (100X area), new limiting magnitude is:", opts: ["7th magnitude", "8th magnitude", "11th magnitude", "13th magnitude"], ans: 2 },
             { q: "Luminosity is defined as:", opts: ["Logarithmic measure of brightness", "Rate that radiant energy is emitted over all wavelengths from the entire surface", "Limiting surface of a black hole", "Dark spots on the sun"], ans: 1 },
             { q: "Apparent magnitude is:", opts: ["A logarithmic measure of brightness as it appears in the sky", "Rapidly rotating neutron star", "Discrete absorption lines", "Kinetic energy"], ans: 0 },
             { q: "Apparent magnitude is a measure of:", opts: ["brightness of a star as it appears in the sky", "temperature of photosphere", "brightness if located at 10 pc", "total energy output"], ans: 0 }
         ];
 
-        // Render Kuis
+        // Render Kuis ke DOM
         function renderQuiz(babNum, containerId, bankSoal) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             bankSoal.forEach((item, index) => {
-                let html = `<div class="bg-slate-800 p-4 rounded border border-slate-700">
-                    <p class="mb-3 text-slate-200">${index + 1}. ${item.q}</p>
-                    <div class="space-y-2">`;
+                let html = `
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-md">
+                    <div class="flex gap-4">
+                        <div class="w-8 h-8 flex-shrink-0 bg-sky-900/50 text-sky-400 rounded-full flex items-center justify-center font-bold text-sm border border-sky-800">${index + 1}</div>
+                        <div class="flex-1">
+                            <p class="mb-4 text-slate-200 font-medium leading-relaxed">${item.q}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">`;
                 item.opts.forEach((opt, oIdx) => {
-                    html += `<label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-slate-700 rounded transition">
-                        <input type="radio" name="q${babNum}_${index}" value="${oIdx}" class="text-sky-500 bg-slate-900 border-slate-600 focus:ring-sky-500">
-                        <span class="text-slate-300 text-sm">${opt}</span>
-                    </label>`;
+                    const letters = ['A', 'B', 'C', 'D'];
+                    html += `
+                                <label class="flex items-start space-x-3 cursor-pointer p-3 border border-slate-700 hover:border-sky-500 bg-slate-900/50 rounded-lg transition">
+                                    <input type="radio" name="q${babNum}_${index}" value="${oIdx}" class="mt-1 w-4 h-4 text-sky-500 bg-slate-900 border-slate-600 focus:ring-sky-500 focus:ring-offset-slate-900">
+                                    <span class="text-slate-300 text-sm"><span class="font-bold text-slate-500 mr-1">${letters[oIdx]}.</span> ${opt}</span>
+                                </label>`;
                 });
-                html += `</div></div>`;
+                html += `   </div>
+                        </div>
+                    </div>
+                </div>`;
                 container.innerHTML += html;
             });
         }
+        
+        // Panggil render saat load
         renderQuiz(1, 'quiz-container-bab1', bankSoalBab1);
         renderQuiz(2, 'quiz-container-bab2', bankSoalBab2);
 
+        // Koreksi Kuis
         function submitQuiz(babNum) {
             const bankSoal = babNum === 1 ? bankSoalBab1 : bankSoalBab2;
             let score = 0;
             bankSoal.forEach((item, index) => {
                 const ans = document.querySelector(`input[name="q${babNum}_${index}"]:checked`);
-                if(ans && parseInt(ans.value) === item.ans) score++;
+                const container = document.querySelectorAll(`input[name="q${babNum}_${index}"]`)[0].closest('.bg-slate-800');
+                
+                // Reset style
+                container.classList.remove('border-green-500', 'border-red-500', 'bg-green-900/10', 'bg-red-900/10');
+                
+                if(ans) {
+                    if (parseInt(ans.value) === item.ans) {
+                        score++;
+                        container.classList.add('border-green-500', 'bg-green-900/10');
+                    } else {
+                        container.classList.add('border-red-500', 'bg-red-900/10');
+                    }
+                } else {
+                    container.classList.add('border-red-500'); // Kosong dianggap salah
+                }
             });
             const percent = (score / 20) * 100;
-            document.getElementById(`score-bab${babNum}`).innerText = `Nilai: ${percent} / 100 (${score}/20 Benar)`;
+            const scoreBox = document.getElementById(`score-bab${babNum}`);
+            scoreBox.innerText = `Skor: ${percent} (${score}/20)`;
+            scoreBox.className = `text-xl font-black px-4 py-2 rounded-lg border ${percent > 70 ? 'text-green-400 bg-green-900/20 border-green-800' : 'text-red-400 bg-red-900/20 border-red-800'}`;
+            
+            // Scroll ke atas untuk melihat nilai
+            document.getElementById('content-area').scrollTo({top: 0, behavior: 'smooth'});
         }
 
         // ================= LOGIKA KALKULATOR =================
@@ -335,173 +471,234 @@
             const unit = document.getElementById('b1-unit').value;
             const val = parseFloat(document.getElementById('b1-val').value) || 0;
             let pc = 0;
+            const KM_PER_PC = 3.08567758e13;
 
-            const KM_PER_PC = 3.086e13;
             if(unit === 'pc') pc = val;
             else if(unit === 'arcsec') pc = val > 0 ? 1 / val : 0;
-            else if(unit === 'ly') pc = val / 3.26;
+            else if(unit === 'ly') pc = val / 3.26156;
             else if(unit === 'au') pc = val / 206265;
             else if(unit === 'km') pc = val / KM_PER_PC;
 
-            const html = `
-                <p><strong>Parsec:</strong> ${pc.toFixed(4)} pc</p>
-                <p><strong>Paralaks:</strong> ${(pc > 0 ? 1/pc : 0).toFixed(4)} detik busur</p>
-                <p><strong>Tahun Cahaya:</strong> ${(pc * 3.26).toFixed(4)} ly</p>
-                <p><strong>Astronomical Unit:</strong> ${(pc * 206265).toLocaleString()} AU</p>
-                <p><strong>Kilometer:</strong> ${(pc * KM_PER_PC).toExponential(4)} km</p>
+            document.getElementById('b1-results').innerHTML = `
+                <div class="bg-slate-800 p-3 rounded border border-slate-700"><span class="text-xs text-slate-500 block">Parsec (pc)</span><span class="font-mono text-sky-400 text-lg">${pc.toFixed(4)}</span></div>
+                <div class="bg-slate-800 p-3 rounded border border-slate-700"><span class="text-xs text-slate-500 block">Detik Busur (")</span><span class="font-mono text-sky-400 text-lg">${(pc > 0 ? 1/pc : 0).toFixed(4)}</span></div>
+                <div class="bg-slate-800 p-3 rounded border border-slate-700"><span class="text-xs text-slate-500 block">Tahun Cahaya (ly)</span><span class="font-mono text-sky-400 text-lg">${(pc * 3.26156).toFixed(4)}</span></div>
+                <div class="bg-slate-800 p-3 rounded border border-slate-700"><span class="text-xs text-slate-500 block">Astron. Unit (AU)</span><span class="font-mono text-sky-400 text-lg">${(pc * 206265).toLocaleString('id-ID', {maximumFractionDigits: 2})}</span></div>
+                <div class="bg-slate-800 p-3 rounded border border-slate-700 col-span-1 md:col-span-2"><span class="text-xs text-slate-500 block">Kilometer (km)</span><span class="font-mono text-sky-400 text-lg">${(pc * KM_PER_PC).toExponential(4)}</span></div>
             `;
-            document.getElementById('b1-results').innerHTML = html;
         }
+        calcBab1(); // init
 
         function calcPogson() {
             const m1 = parseFloat(document.getElementById('pog-m1').value) || 0;
             const m2 = parseFloat(document.getElementById('pog-m2').value) || 0;
-            // E1/E2 = 10^((m2-m1)/2.5)
             const ratio = Math.pow(10, (m2 - m1) / 2.5);
             let text = "";
-            if (ratio > 1) text = `Bintang 1 adalah ${ratio.toFixed(2)}x lebih terang dari Bintang 2.`;
-            else if (ratio < 1) text = `Bintang 2 adalah ${(1/ratio).toFixed(2)}x lebih terang dari Bintang 1.`;
-            else text = `Kedua bintang sama terang.`;
-            document.getElementById('res-pogson').innerText = text;
+            if (ratio > 1) text = `Bintang 1 adalah ${ratio.toFixed(2)}x LEBIH TERANG dari Bintang 2.`;
+            else if (ratio < 1) text = `Bintang 2 adalah ${(1/ratio).toFixed(2)}x LEBIH TERANG dari Bintang 1.`;
+            else text = `Kedua bintang memiliki kecerlangan yang SAMA.`;
+            document.getElementById('res-pogson').innerHTML = `<strong>Hasil:</strong><br>${text}`;
         }
 
         function calcModulus() {
             const m = parseFloat(document.getElementById('mod-m').value) || 0;
             const M = parseFloat(document.getElementById('mod-M').value) || 0;
             const Av = parseFloat(document.getElementById('mod-Av').value) || 0;
-            // log d = (m - M + 5 - Av) / 5
             const logD = (m - M + 5 - Av) / 5;
             const d = Math.pow(10, logD);
-            document.getElementById('res-modulus').innerText = `Jarak d = ${d.toFixed(2)} pc`;
+            document.getElementById('res-modulus').innerHTML = `<strong>Jarak Bintang:</strong><br>${d.toLocaleString('id-ID', {maximumFractionDigits: 2})} Parsec`;
         }
 
-        // ================= LOGIKA SIMULASI CANVAS =================
+        // ================= SIMULASI PARALAKS ANIMASI =================
         const pCanvas = document.getElementById('parallaxCanvas');
         const pCtx = pCanvas.getContext('2d');
         const pSlider = document.getElementById('distanceSlider');
+        let pAnimId;
+        let orbitAngle = 0;
 
-        function renderParallax() {
+        function renderParallaxInit() {
+            if(pAnimId) cancelAnimationFrame(pAnimId);
+            animateParallax();
+        }
+
+        function animateParallax() {
             const dist = parseFloat(pSlider.value);
             document.getElementById('distVal').innerText = dist;
             
             pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
             const cx = pCanvas.width / 2;
-            const cy = pCanvas.height / 2;
-
+            const cy = pCanvas.height - 100; // Orbit sun at bottom
+            
             // Draw Background Stars
             pCtx.fillStyle = '#ffffff';
-            for(let i=0; i<50; i++) {
-                // Static seed positions based on index
-                let sx = 50 + (i * 123) % (pCanvas.width - 100);
-                let sy = 50 + (i * 321) % 100;
-                pCtx.beginPath(); pCtx.arc(sx, sy, 1, 0, Math.PI*2); pCtx.fill();
+            for(let i=0; i<100; i++) {
+                let sx = (i * 137) % pCanvas.width;
+                let sy = (i * 251) % (pCanvas.height - 200);
+                pCtx.globalAlpha = 0.3 + ((i%10)/10);
+                pCtx.beginPath(); pCtx.arc(sx, sy, (i%3===0)?1.5:1, 0, Math.PI*2); pCtx.fill();
             }
+            pCtx.globalAlpha = 1.0;
 
-            // Draw Earth Orbit
-            pCtx.strokeStyle = '#334155';
+            // Draw Earth Orbit (Ellipse)
+            const orbitRx = 250;
+            const orbitRy = 40;
+            pCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            pCtx.lineWidth = 2;
             pCtx.beginPath();
-            pCtx.ellipse(cx, pCanvas.height - 50, 150, 40, 0, 0, Math.PI*2);
+            pCtx.ellipse(cx, cy, orbitRx, orbitRy, 0, 0, Math.PI*2);
             pCtx.stroke();
 
             // Draw Sun
             pCtx.fillStyle = '#fbbf24';
-            pCtx.beginPath(); pCtx.arc(cx, pCanvas.height - 50, 15, 0, Math.PI*2); pCtx.fill();
+            pCtx.shadowColor = '#fbbf24';
+            pCtx.shadowBlur = 20;
+            pCtx.beginPath(); pCtx.arc(cx, cy, 20, 0, Math.PI*2); pCtx.fill();
+            pCtx.shadowBlur = 0;
 
-            // Simulate Earth Position (Left & Right)
-            pCtx.fillStyle = '#38bdf8';
-            pCtx.beginPath(); pCtx.arc(cx - 150, pCanvas.height - 50, 8, 0, Math.PI*2); pCtx.fill(); // Jan
-            pCtx.beginPath(); pCtx.arc(cx + 150, pCanvas.height - 50, 8, 0, Math.PI*2); pCtx.fill(); // Jul
+            // Update Earth Position
+            orbitAngle += 0.02; 
+            const ex = cx + orbitRx * Math.cos(orbitAngle);
+            const ey = cy + orbitRy * Math.sin(orbitAngle);
 
-            // Target Star
-            const starY = pCanvas.height - 100 - (dist * 4); // Scale distance
+            // Target Star (Foreground)
+            const starY = cy - (dist * 8); // Scale distance visually
+            const pShift = (orbitRx / dist) * 1.5; // Parallax shift magnitude
+            const projectedX = cx - (pShift * Math.cos(orbitAngle)); // Opposite to earth
+            
+            // Draw Target Star Projecting to background
+            pCtx.fillStyle = 'rgba(248, 113, 113, 0.3)';
+            pCtx.beginPath(); pCtx.arc(projectedX, 50, 10, 0, Math.PI*2); pCtx.fill();
             pCtx.fillStyle = '#f87171';
-            pCtx.beginPath(); pCtx.arc(cx, starY, 6, 0, Math.PI*2); pCtx.fill();
+            pCtx.beginPath(); pCtx.arc(projectedX, 50, 4, 0, Math.PI*2); pCtx.fill();
 
-            // Lines of sight
-            pCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+            // Line of Sight
+            pCtx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
             pCtx.setLineDash([5, 5]);
-            // From Left Earth
-            pCtx.beginPath(); pCtx.moveTo(cx - 150, pCanvas.height - 50); pCtx.lineTo(cx + (150 * (50/dist)), 50); pCtx.stroke();
-            // From Right Earth
-            pCtx.beginPath(); pCtx.moveTo(cx + 150, pCanvas.height - 50); pCtx.lineTo(cx - (150 * (50/dist)), 50); pCtx.stroke();
+            pCtx.beginPath(); pCtx.moveTo(ex, ey); pCtx.lineTo(projectedX, 50); pCtx.stroke();
             pCtx.setLineDash([]);
-        }
-        pSlider.addEventListener('input', renderParallax);
 
-        // Simulasi Bab 2
+            // Draw Target Star (Actual 3D Space)
+            pCtx.fillStyle = '#f87171';
+            pCtx.shadowColor = '#f87171';
+            pCtx.shadowBlur = 15;
+            pCtx.beginPath(); pCtx.arc(cx, starY, 8, 0, Math.PI*2); pCtx.fill();
+            pCtx.shadowBlur = 0;
+
+            // Draw Earth
+            pCtx.fillStyle = '#38bdf8';
+            pCtx.beginPath(); pCtx.arc(ex, ey, 10, 0, Math.PI*2); pCtx.fill();
+
+            pAnimId = requestAnimationFrame(animateParallax);
+        }
+
+        // ================= SIMULASI BENDA HITAM =================
         const bCanvas = document.getElementById('blackbodyCanvas');
         const bCtx = bCanvas.getContext('2d');
         const bSlider = document.getElementById('tempSlider');
 
         function updateBlackbody() {
             const t = parseFloat(bSlider.value);
-            const lambda_peak = 2898000 / t;
+            const lambda_peak = 2898000 / t; // nm
             document.getElementById('temp-display').innerText = `${t} K`;
             document.getElementById('lambda-display').innerText = lambda_peak.toFixed(1);
 
-            // Color Indicator
-            let color = "#ffcc00";
-            if (t < 3500) color = "#ff4d4d";
-            else if (t < 5000) color = "#ffa64d";
-            else if (t < 6000) color = "#ffcc00";
-            else if (t < 7500) color = "#ffffcc";
-            else if (t < 10000) color = "#ffffff";
-            else if (t < 20000) color = "#b3d9ff";
-            else color = "#66b3ff";
-            
-            const indicator = document.getElementById('star-color-indicator');
-            indicator.style.backgroundColor = color;
-            indicator.style.boxShadow = `0 0 40px ${color}`;
+            // Color Indicator Math
+            let r, g, b;
+            let temp = t / 100;
+            if (temp <= 66) { r = 255; g = temp; g = 99.4708025861 * Math.log(g) - 161.1195681661;
+                if (temp <= 19) b = 0; else { b = temp - 10; b = 138.5177312231 * Math.log(b) - 305.0447927307; }
+            } else {
+                r = temp - 60; r = 329.698727446 * Math.pow(r, -0.1332047592);
+                g = temp - 60; g = 288.1221695283 * Math.pow(g, -0.0755148492);
+                b = 255;
+            }
+            r = Math.min(255, Math.max(0, r)); g = Math.min(255, Math.max(0, g)); b = Math.min(255, Math.max(0, b));
+            const colorStr = `rgb(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)})`;
 
-            // Draw Curve (Planck's Law Approximation)
+            const core = document.getElementById('star-core');
+            const glow = document.getElementById('star-glow');
+            core.style.backgroundColor = colorStr;
+            glow.style.backgroundColor = colorStr;
+
+            // Draw Curve
             bCtx.clearRect(0, 0, bCanvas.width, bCanvas.height);
             
-            // Grid
-            bCtx.strokeStyle = '#334155';
-            bCtx.beginPath(); bCtx.moveTo(50, 250); bCtx.lineTo(450, 250); bCtx.stroke(); // X
-            bCtx.beginPath(); bCtx.moveTo(50, 50); bCtx.lineTo(50, 250); bCtx.stroke(); // Y
-            bCtx.fillStyle = '#94a3b8'; bCtx.fillText("Panjang Gelombang (nm)", 200, 280);
-            bCtx.save(); bCtx.translate(20, 200); bCtx.rotate(-Math.PI/2); bCtx.fillText("Intensitas", 0, 0); bCtx.restore();
+            // Axes
+            const padX = 60, padY = 40;
+            const graphW = bCanvas.width - padX - 20;
+            const graphH = bCanvas.height - padY - 20;
 
-            // Spectral Band Colors (Visible Light roughly 400 - 700 nm mapped to X: 150 - 250)
-            const visGrad = bCtx.createLinearGradient(150, 0, 250, 0);
-            visGrad.addColorStop(0, "blue"); visGrad.addColorStop(0.5, "green"); visGrad.addColorStop(1, "red");
+            // Visible Spectrum Background (approx 400nm - 700nm)
+            // If scale is 0 to 2000nm, 400 is at 20%, 700 is at 35%
+            const x400 = padX + (400/2000)*graphW;
+            const x700 = padX + (700/2000)*graphW;
+            
+            const visGrad = bCtx.createLinearGradient(x400, 0, x700, 0);
+            visGrad.addColorStop(0, "rgba(138, 43, 226, 0.3)"); // Violet
+            visGrad.addColorStop(0.2, "rgba(0, 0, 255, 0.3)");   // Blue
+            visGrad.addColorStop(0.5, "rgba(0, 255, 0, 0.3)");   // Green
+            visGrad.addColorStop(0.8, "rgba(255, 255, 0, 0.3)"); // Yellow
+            visGrad.addColorStop(1, "rgba(255, 0, 0, 0.3)");     // Red
+            
             bCtx.fillStyle = visGrad;
-            bCtx.globalAlpha = 0.2;
-            bCtx.fillRect(150, 50, 100, 200);
-            bCtx.globalAlpha = 1.0;
+            bCtx.fillRect(x400, 20, x700-x400, graphH);
+            bCtx.fillStyle = 'rgba(255,255,255,0.7)';
+            bCtx.font = "10px sans-serif";
+            bCtx.fillText("Cahaya Tampak", x400, 30);
 
-            // Curve Drawing
-            bCtx.strokeStyle = color;
-            bCtx.lineWidth = 3;
+            // Draw Axes
+            bCtx.strokeStyle = '#475569'; bCtx.lineWidth = 2;
+            bCtx.beginPath(); 
+            bCtx.moveTo(padX, 20); bCtx.lineTo(padX, bCanvas.height - padY); // Y
+            bCtx.lineTo(bCanvas.width - 20, bCanvas.height - padY); // X
+            bCtx.stroke();
+            
+            bCtx.fillStyle = '#94a3b8'; bCtx.font = "12px sans-serif";
+            bCtx.fillText("Panjang Gelombang (nm)", bCanvas.width/2 - 50, bCanvas.height - 10);
+            bCtx.save(); bCtx.translate(20, bCanvas.height/2 + 30); bCtx.rotate(-Math.PI/2); bCtx.fillText("Intensitas Relatif", 0, 0); bCtx.restore();
+
+            // Curve Math
+            bCtx.strokeStyle = colorStr;
+            bCtx.lineWidth = 4;
             bCtx.beginPath();
             
-            const maxIntensity = Math.pow(t, 4); // Stefan Boltzmann normalized
-            
-            for(let x = 50; x <= 450; x++) {
-                // Map x to wavelength (0 to 2000 nm)
-                const wave = ((x - 50) / 400) * 2000;
-                if(wave === 0) { bCtx.moveTo(x, 250); continue; }
+            // Planck constants (simplified for scale)
+            const h = 6.626e-34, c = 3e8, k = 1.38e-23;
+            // Find max intensity at this temp to normalize height
+            const peakWave_m = lambda_peak * 1e-9;
+            const term1Max = 1 / Math.pow(peakWave_m, 5);
+            const term2Max = Math.exp((h*c)/(peakWave_m*k*t)) - 1;
+            const maxI = term1Max / term2Max;
+
+            for(let x = 0; x <= graphW; x++) {
+                const wave = (x / graphW) * 2000; // 0 to 2000 nm
+                if(wave < 10) { bCtx.moveTo(padX + x, bCanvas.height - padY); continue; }
                 
-                // Simplified Planck for visual scale
                 const wave_m = wave * 1e-9;
-                const h = 6.626e-34, c = 3e8, k = 1.38e-23;
                 const term1 = 1 / Math.pow(wave_m, 5);
                 const term2 = Math.exp((h*c)/(wave_m*k*t)) - 1;
-                let intensity = term1 / term2;
+                const intensity = term1 / term2;
                 
-                // Normalization for canvas
-                const normScale = 1e-13 * (6000/t) * (6000/t); 
-                const y = 250 - (intensity * normScale);
+                // Normalize relative to current peak so it always fits
+                const normI = intensity / maxI;
+                const y = (bCanvas.height - padY) - (normI * graphH * 0.9);
                 
-                if (y < 50) { bCtx.lineTo(x, 50); } // Clamp
-                else { bCtx.lineTo(x, y); }
+                if (x === 0) bCtx.moveTo(padX + x, y);
+                else bCtx.lineTo(padX + x, y);
             }
             bCtx.stroke();
+            
+            // Mark Peak
+            const peakX = padX + (lambda_peak/2000)*graphW;
+            const peakY = (bCanvas.height - padY) - (0.9 * graphH);
+            if(peakX <= bCanvas.width - 20) {
+                bCtx.fillStyle = '#f8fafc';
+                bCtx.beginPath(); bCtx.arc(peakX, peakY, 4, 0, Math.PI*2); bCtx.fill();
+                bCtx.setLineDash([4,4]); bCtx.strokeStyle = 'rgba(255,255,255,0.5)'; bCtx.lineWidth = 1;
+                bCtx.beginPath(); bCtx.moveTo(peakX, peakY); bCtx.lineTo(peakX, bCanvas.height - padY); bCtx.stroke();
+                bCtx.setLineDash([]);
+            }
         }
-
-        // Initialize First Canvas
-        renderParallax();
     </script>
 </body>
 </html>
