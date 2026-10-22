@@ -31,7 +31,7 @@
         .spectrum-bar { height: 20px; border-radius: 10px; background: linear-gradient(to right, #4c1d95, #1d4ed8, #047857, #eab308, #ea580c, #b91c1c); margin: 1rem 0; border: 1px solid #334155; }
     </style>
 </head>
-<body class="flex h-screen">
+<body class="flex h-screen w-full">
 
     <!-- Sidebar Navigasi -->
     <aside id="sidebar" class="w-72 bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0 z-20 shadow-2xl transition-all duration-300 absolute lg:relative h-full">
@@ -51,8 +51,8 @@
     </aside>
 
     <!-- Konten Utama -->
-    <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-950 w-full">
-        <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-6 z-10 flex items-center shadow-sm">
+    <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-950 w-full h-full">
+        <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-6 z-10 flex items-center shadow-sm w-full">
             <button onclick="toggleSidebar()" class="mr-4 text-slate-400 hover:text-sky-400 focus:outline-none transition-colors" title="Toggle Navigasi">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
@@ -60,19 +60,19 @@
         </header>
 
         <!-- Tab Navigasi Menu -->
-        <div class="bg-slate-900 border-b border-slate-800 px-6 flex space-x-8 z-10 shadow-md overflow-x-auto whitespace-nowrap scrollbar-hide" id="tab-container">
+        <div class="bg-slate-900 border-b border-slate-800 px-6 flex space-x-8 z-10 shadow-md overflow-x-auto whitespace-nowrap scrollbar-hide w-full" id="tab-container">
             <button class="tab-btn active py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('materi')">Materi</button>
             <button class="tab-btn py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('simulasi')">Simulasi</button>
             <button class="tab-btn py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('kalkulator')">Kalkulator</button>
             <button class="tab-btn py-4 text-sm font-bold text-slate-400 hover:text-slate-200 transition tracking-wide uppercase" onclick="switchTab('soal')">Latihan Soal</button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-6 md:p-8 relative" id="content-area">
+        <div class="flex-1 overflow-y-auto p-6 md:p-8 relative w-full" id="content-area">
             
             <!-- ================= BAB 1 ================= -->
             <div id="bab-1" class="chapter-content">
                 <!-- Materi Bab 1 -->
-                <div id="bab-1-materi" class="tab-content text-slate-300 leading-relaxed max-w-4xl mx-auto space-y-6">
+                <div id="bab-1-materi" class="tab-content text-slate-300 leading-relaxed max-w-5xl mx-auto space-y-6">
                     
                     <div class="materi-card">
                         <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2 flex items-center gap-2">
@@ -193,7 +193,7 @@
                 </div>
 
                 <!-- Simulasi Bab 1 -->
-                <div id="bab-1-simulasi" class="tab-content hidden max-w-5xl mx-auto">
+                <div id="bab-1-simulasi" class="tab-content hidden max-w-5xl mx-auto w-full">
                     <h3 class="text-2xl font-bold text-sky-400 mb-4">Simulasi Interaktif: Astronomi Dasar</h3>
                     
                     <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 shadow-xl">
@@ -261,7 +261,7 @@
             <!-- ================= BAB 2 ================= -->
             <div id="bab-2" class="chapter-content hidden">
                 <!-- Materi Bab 2 -->
-                <div id="bab-2-materi" class="tab-content text-slate-300 leading-relaxed max-w-4xl mx-auto space-y-6">
+                <div id="bab-2-materi" class="tab-content text-slate-300 leading-relaxed max-w-5xl mx-auto space-y-6">
                     <div class="materi-card">
                         <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2 flex items-center gap-2">
                             <svg class="w-5 h-5 text-fuchsia-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
@@ -293,7 +293,10 @@
                     </div>
                     
                     <div class="materi-card">
-                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2">2. Hukum Pancaran Benda Hitam (Blackbody)</h3>
+                        <h3 class="text-xl font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                            2. Hukum Pancaran Benda Hitam (Blackbody)
+                        </h3>
                         <ul class="list-disc pl-5 space-y-4">
                             <li>
                                 <strong class="text-emerald-300">Hukum Wien:</strong> Menentukan panjang gelombang pada saat intensitas radiasi maksimal. Bintang panas berwarna biru (gelombang pendek), bintang dingin merah (gelombang panjang).
@@ -330,7 +333,7 @@
                 </div>
 
                 <!-- Simulasi Bab 2 -->
-                <div id="bab-2-simulasi" class="tab-content hidden max-w-5xl mx-auto">
+                <div id="bab-2-simulasi" class="tab-content hidden max-w-5xl mx-auto w-full">
                     <h3 class="text-2xl font-bold text-sky-400 mb-4">Simulasi Interaktif: Fotometri Bintang</h3>
                     
                     <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 shadow-xl">
@@ -404,7 +407,7 @@
                 <div class="text-center max-w-md">
                     <svg class="w-20 h-20 text-slate-700 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
                     <h3 class="text-2xl font-bold text-slate-400">Kamar Sedang Disiapkan</h3>
-                    <p class="text-slate-500 mt-2">Materi, Simulasi, dan Soal untuk bab ini sedang dalam tahap persiapan. Unggah materi untuk melanjutkan!</p>
+                    <p class="text-slate-500 mt-2">Materi, Simulasi, dan Soal untuk bab ini sedang dalam tahap persiapan. Kami menunggu unggahan materi berikutnya!</p>
                 </div>
             </div>
 
@@ -421,6 +424,18 @@
                 cancelAnimationFrame(currentAnimId);
                 currentAnimId = null;
             }
+        }
+
+        // Resize observer untuk kanvas
+        window.addEventListener('resize', () => {
+            if(currentChapter === 1 && document.getElementById('bab-1-simulasi').classList.contains('hidden') === false) setModeB1(simModeBab1);
+            if(currentChapter === 2 && document.getElementById('bab-2-simulasi').classList.contains('hidden') === false) setModeB2(simModeBab2);
+        });
+
+        function resizeCanvas(canvas) {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
         }
 
         // ================= SIDEBAR TOGGLE =================
@@ -449,8 +464,12 @@
 
         function loadChapter(num, btn, title) {
             currentChapter = num;
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sidebar-item').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('text-slate-400');
+            });
             btn.classList.add('active');
+            btn.classList.remove('text-slate-400');
             document.getElementById('chapter-title').innerText = `Bab ${num}: ${title}`;
             document.querySelectorAll('.chapter-content').forEach(el => el.classList.add('hidden'));
             
@@ -463,6 +482,9 @@
             } else {
                 document.getElementById('bab-placeholder').classList.remove('hidden');
             }
+            
+            // Auto-hide sidebar on mobile
+            if(window.innerWidth < 1024) toggleSidebar();
         }
 
         function switchTab(tabName) {
@@ -671,6 +693,7 @@
 
         function runSimBab1() {
             const canvas = document.getElementById('canvasBab1');
+            resizeCanvas(canvas);
             const ctx = canvas.getContext('2d');
             const cw = canvas.width; const ch = canvas.height;
 
@@ -684,7 +707,7 @@
                     if(document.getElementById('distVal')) document.getElementById('distVal').innerText = dist;
 
                     const cx = cw / 2; const cy = ch - 80;
-                    const orbitRx = 200; const orbitRy = 30;
+                    const orbitRx = Math.min(200, cw/3); const orbitRy = 30;
 
                     // Stars Background
                     ctx.fillStyle = '#ffffff';
@@ -736,7 +759,7 @@
                     ctx.fillStyle = '#fbbf24'; ctx.shadowColor = '#fbbf24'; ctx.shadowBlur = 20;
                     ctx.beginPath(); ctx.arc(cx, cy, 15, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
                     
-                    const eR = 120;
+                    const eR = Math.min(120, ch/3);
                     ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth=2;
                     ctx.beginPath(); ctx.arc(cx, cy, eR, 0, Math.PI*2); ctx.stroke();
                     
@@ -745,7 +768,7 @@
 
                     if (type === 'inferior') {
                         b1AngleP += 0.016; // Faster (e.g. Venus)
-                        const pR = 75;
+                        const pR = eR * 0.6;
                         ctx.beginPath(); ctx.arc(cx, cy, pR, 0, Math.PI*2); ctx.stroke();
                         const px = cx + pR * Math.cos(b1AngleP);
                         const py = cy + pR * Math.sin(b1AngleP);
@@ -757,13 +780,12 @@
                         ctx.fillStyle = '#a78bfa'; ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI*2); ctx.fill();
                         ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(ex, ey, 8, 0, Math.PI*2); ctx.fill();
 
-                        // Label
                         ctx.fillStyle = '#fff'; ctx.font = "12px sans-serif";
                         ctx.fillText("Bumi", ex+12, ey); ctx.fillText("Planet Dalam", px+10, py);
 
                     } else {
                         b1AngleP += 0.005; // Slower (e.g. Mars)
-                        const pR = 190;
+                        const pR = Math.min(220, Math.min(cw/2-20, ch/2-20));
                         ctx.beginPath(); ctx.arc(cx, cy, pR, 0, Math.PI*2); ctx.stroke();
                         const px = cx + pR * Math.cos(b1AngleP);
                         const py = cy + pR * Math.sin(b1AngleP);
@@ -811,22 +833,23 @@
                 document.getElementById('btn-mode-wien').classList.add('bg-slate-700');
                 document.getElementById('controls-b2').innerHTML = `
                     <div class="w-full text-center mb-4">
-                        <p class="text-xl font-bold text-slate-200">Jarak Detektor: <span id="fluxDist" class="text-emerald-400">1</span> d</p>
-                        <p class="text-sm text-slate-400 mt-1">Fluks Cahaya Diterima: <span id="fluxVal" class="font-mono font-bold text-white bg-slate-900 px-2 py-1 rounded">1.00</span> E</p>
+                        <p class="text-xl font-bold text-slate-200">Jarak Detektor: <span id="fluxDist" class="text-emerald-400">1.0</span> d</p>
+                        <p class="text-sm text-slate-400 mt-1">Fluks Cahaya Diterima: <span id="fluxVal" class="font-mono font-bold text-white bg-slate-900 px-2 py-1 rounded">1.000</span> E</p>
                     </div>
                     <div class="w-full text-left">
                         <label class="text-xs font-bold text-slate-400 uppercase">Tarik Detektor (Jarak)</label>
                         <input type="range" id="fluxSlider" min="1" max="4" value="1" step="0.1" class="w-full mt-2 cursor-pointer h-2 bg-slate-700 rounded-lg appearance-none">
                     </div>
-                    <p class="text-xs text-slate-500 mt-4 text-center">Hukum Kuadrat Terbalik: Cahaya menyebar di area yang lebih luas seiring menjauhnya jarak ($A \\propto d^2$).</p>
+                    <p class="text-xs text-slate-500 mt-4 text-center">Hukum Kuadrat Terbalik: Cahaya menyebar secara luasan bola seiring bertambahnya jarak ($A \\propto d^2$).</p>
                 `;
             }
             cancelCurrentAnimation();
-            updateBlackbody(); // Function will handle both now
+            updateBlackbody(); 
         }
 
         function updateBlackbody() {
             const canvas = document.getElementById('canvasBab2');
+            resizeCanvas(canvas);
             const ctx = canvas.getContext('2d');
             const cw = canvas.width; const ch = canvas.height;
             ctx.clearRect(0, 0, cw, ch);
@@ -940,33 +963,44 @@
                     ctx.fill();
 
                     // Screen position
-                    const screenX = srcX + (dist * 150);
-                    const screenH = Math.tan(fov)* (dist*150) * 2;
+                    const maxScreenDist = cw - 100;
+                    const screenX = srcX + ((dist/4) * maxScreenDist); // Map 1-4 to pixels
+                    const screenH = Math.tan(fov)* ((dist/4) * maxScreenDist) * 2;
                     
-                    // Draw Detector Screen
-                    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3;
-                    ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+                    // Draw Detector Screen Area representation
+                    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2;
+                    ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+                    
+                    // Perspective square
                     ctx.beginPath();
-                    ctx.rect(screenX, srcY - screenH/2, 10, screenH);
+                    ctx.moveTo(screenX, srcY - screenH/2);
+                    ctx.lineTo(screenX + 20, srcY - screenH/2 - 10);
+                    ctx.lineTo(screenX + 20, srcY + screenH/2 - 10);
+                    ctx.lineTo(screenX, srcY + screenH/2);
+                    ctx.closePath();
                     ctx.fill(); ctx.stroke();
 
-                    // Draw Photons hitting screen based on flux density
+                    // Draw Photons (Dots)
                     ctx.fillStyle = '#ffffff';
-                    const numPhotons = Math.floor(40 * flux);
-                    for(let i=0; i<numPhotons; i++){
-                        const py = (srcY - screenH/2) + (i/numPhotons)*screenH + (screenH/(numPhotons*2));
-                        ctx.beginPath(); ctx.arc(screenX, py, 2, 0, Math.PI*2); ctx.fill();
+                    // Photons spread over the area (screenH^2). Density is what matters.
+                    // We draw fixed total photons, spread across the changing height.
+                    const totalDots = 150;
+                    for(let i=0; i<totalDots; i++){
+                        // seeded random for stability
+                        const seed = (i * 12345) % 1000 / 1000;
+                        const seed2 = (i * 54321) % 1000 / 1000;
+                        
+                        const py = (srcY - screenH/2) + seed * screenH;
+                        const px = screenX + seed2 * 20;
+                        ctx.beginPath(); ctx.arc(px, py - (seed2*10), 1.5, 0, Math.PI*2); ctx.fill();
                     }
 
-                    // Labels
                     ctx.fillStyle = '#fff'; ctx.font="14px sans-serif";
                     ctx.fillText("Bintang", srcX - 20, srcY + 40);
-                    ctx.fillText(`Area: ~${(dist*dist).toFixed(1)} A`, screenX - 20, srcY + screenH/2 + 20);
-
-                    // Keep refreshing if slider moves, handled by oninput but we can requestFrame if we wanted moving photons
+                    ctx.fillText(`Area Luasan: ${(dist*dist).toFixed(1)}x`, screenX - 20, srcY + screenH/2 + 25);
+                    ctx.fillText(`Fluks (1/d²): ${(flux).toFixed(3)}`, screenX - 20, srcY + screenH/2 + 45);
                 }
                 
-                // Static render for flux until slider moves
                 drawFluxAnim();
                 if(document.getElementById('fluxSlider')) {
                     document.getElementById('fluxSlider').oninput = drawFluxAnim;
